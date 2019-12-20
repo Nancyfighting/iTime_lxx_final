@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.home.AddActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:background="#4BB0F2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textView_add_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="72dp"
+            android:layout_marginLeft="72dp"
+            android:layout_marginTop="48dp"
+            android:text="标题"
+            android:textColor="#ffffff"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView_add_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="备注"
+            android:textColor="#ffffff"
+            app:layout_constraintStart_toStartOf="@id/editText_add_title"
+            app:layout_constraintTop_toBottomOf="@id/editText_add_title" />
+
+        <EditText
+            android:id="@+id/editText_add_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="生日,纪念日,节日,考试..."
+            android:textColor="#ffffff"
+            app:layout_constraintStart_toStartOf="@+id/textView_add_title"
+            app:layout_constraintTop_toBottomOf="@+id/textView_add_title" />
+
+        <EditText
+            android:id="@+id/editText_Add_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="想说的话"
+            android:textColor="#ffffff"
+            app:layout_constraintStart_toStartOf="@id/textView_add_tip"
+            app:layout_constraintTop_toBottomOf="@id/textView_add_tip" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout_autoNew"
+        android:layout_width="409dp"
+        android:layout_height="70dp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="@+id/linearLayout_date"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout_date">
+
+        <ImageView
+            android:id="@+id/imageView_auto_new"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/ic_auto_new"
+            tools:ignore="VectorDrawableCompat"
+            tools:layout_editor_absoluteY="413dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView_autoNew"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="日期" />
+
+            <TextView
+                android:id="@+id/textView_autoNew_end"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:text="长按使用日期计算器" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout_image"
+        android:layout_width="409dp"
+        android:layout_height="70dp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="@+id/linearLayout_autoNew"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout_autoNew">
+
+        <ImageView
+            android:id="@+id/imageView_image_add"
+            android:layout_width="46dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/ic_add_image"
+            tools:ignore="VectorDrawableCompat" />
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="wrap_content"
+            android:layout_height="70dp"
+            android:layout_weight="10"
+            android:gravity="center|left"
+            android:text="图片" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout_date"
+        android:layout_width="409dp"
+        android:layout_height="70dp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="@+id/constraintLayout2"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
+
+        <ImageView
+            android:id="@+id/imageView_date"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/ic_alarm"
+            tools:ignore="VectorDrawableCompat" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView_date"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center|left"
+                android:text="日期" />
+
+            <TextView
+                android:id="@+id/textView_date_end"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:gravity="center|left"
+                android:text="长按使用日期计算器" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
