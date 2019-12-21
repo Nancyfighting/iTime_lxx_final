@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -26,6 +27,8 @@ import com.example.myitime.data.ThingSaver;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.app.Activity.RESULT_OK;
+
 public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
@@ -42,7 +45,6 @@ public class HomeFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
 //        FloatingActionButton fab = findViewById(R.id.fab);
-
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         final View root = inflater.inflate(R.layout.fragment_home, container, false);
@@ -54,6 +56,14 @@ public class HomeFragment extends Fragment {
         ListView listViewThings=root.findViewById(R.id.list_view_things);
         adapter = new ThingAdapter(HomeFragment.this.getActivity(),R.layout.list_view_item_thing,listThings);
         listViewThings.setAdapter(adapter);
+        listViewThings.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Thing info = listThings.get(i);
+                Intent intentNew = new Intent(root.getContext(),EditActivity.class);
+                startActivityForResult(intentNew, 0);
+            }
+        });
 
         this.registerForContextMenu(listViewThings);
 
@@ -91,6 +101,19 @@ public class HomeFragment extends Fragment {
             ((TextView) view.findViewById(R.id.tip_view_thing)).setText(thing.getTip());
 
             return view;
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK){
+            String title = data.getStringExtra("title");
+            String tip = data.getStringExtra("tip");
+            int insertPosition = data.getIntExtra("insert_position", 0);
+            listThings.add( new Thing(title, tip,"12月12日",R.drawable.mole));
+            adapter.notifyDataSetChanged();
         }
     }
 }
