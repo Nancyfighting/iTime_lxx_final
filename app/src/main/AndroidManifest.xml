@@ -22,5 +22,6 @@
             </intent-filter>
         </activity>
     </application>
-
+<!--    配置打开照相机的权限-->
+    <uses-permission android:name="android.permission.CAMERA"/>
 </manifest>

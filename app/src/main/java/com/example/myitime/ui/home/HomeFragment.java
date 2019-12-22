@@ -111,7 +111,6 @@ public class HomeFragment extends Fragment {
         if (resultCode == RESULT_OK){
             String title = data.getStringExtra("title");
             String tip = data.getStringExtra("tip");
-            int insertPosition = data.getIntExtra("insert_position", 0);
             listThings.add( new Thing(title, tip,"12月12日",R.drawable.mole));
             adapter.notifyDataSetChanged();
         }

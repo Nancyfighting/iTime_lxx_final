@@ -113,13 +113,13 @@
                 android:id="@+id/textView_autoNew"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:text="日期" />
+                android:text="重复设置" />
 
             <TextView
                 android:id="@+id/textView_autoNew_end"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:text="长按使用日期计算器" />
+                android:text="无" />
         </LinearLayout>
 
     </LinearLayout>
