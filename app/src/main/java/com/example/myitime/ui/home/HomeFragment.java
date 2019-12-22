@@ -2,6 +2,8 @@ package com.example.myitime.ui.home;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +23,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.myitime.MainActivity;
 import com.example.myitime.R;
+import com.example.myitime.data.FileDataSource;
 import com.example.myitime.data.Thing;
 import com.example.myitime.data.ThingSaver;
 
@@ -32,8 +35,8 @@ import static android.app.Activity.RESULT_OK;
 public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
-    private List<Thing> listThings=new ArrayList<>();
-
+    private List<Thing> listThings;
+    private FileDataSource fileDataSource;
     ThingAdapter adapter;
     ThingSaver thingSaver;
     public void onDestroy() {
@@ -56,6 +59,8 @@ public class HomeFragment extends Fragment {
         ListView listViewThings=root.findViewById(R.id.list_view_things);
         adapter = new ThingAdapter(HomeFragment.this.getActivity(),R.layout.list_view_item_thing,listThings);
         listViewThings.setAdapter(adapter);
+
+        //listView中的点击事件
         listViewThings.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -79,9 +84,12 @@ public class HomeFragment extends Fragment {
     }
 
     private void init() {
-        listThings.add( new Thing("进来", "玩","12月12日",R.drawable.mole));
-        listThings.add( new Thing("双人", "哈哈","12月12日",R.drawable.mole));
+        fileDataSource =  new FileDataSource(HomeFragment.this.getContext());
+        listThings = fileDataSource.load();
+//        listThings.add( new Thing("进来", "玩","12月12日",new BitmapDrawable(getResources(),R.drawable.mole)));
+////        listThings.add( new Thing("双人", "哈哈","12月12日",R.drawable.mole));
     }
+
     public class ThingAdapter extends ArrayAdapter<Thing> {
 
         private int resourceId;
@@ -95,9 +103,9 @@ public class HomeFragment extends Fragment {
         public View getView(int position, View convertView, ViewGroup parent) {
             Thing thing = getItem(position);//获取当前项的实例
             View view = LayoutInflater.from(getContext()).inflate(resourceId, parent, false);
-            ((ImageView) view.findViewById(R.id.image_view_thing)).setImageResource(thing.getResourceId());
+            ((ImageView) view.findViewById(R.id.image_view_thing)).setImageDrawable(thing.getImage());
             ((TextView) view.findViewById(R.id.title_view_thing)).setText(thing.getTitle());
-            ((TextView) view.findViewById(R.id.date_view_thing)).setText(thing.getTime());
+            ((TextView) view.findViewById(R.id.date_view_thing)).setText(thing.getTime()[0]+"年"+thing.getTime()[1]+"月"+thing.getTime()[2]+"日");
             ((TextView) view.findViewById(R.id.tip_view_thing)).setText(thing.getTip());
 
             return view;
@@ -108,11 +116,20 @@ public class HomeFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == RESULT_OK){
-            String title = data.getStringExtra("title");
-            String tip = data.getStringExtra("tip");
-            listThings.add( new Thing(title, tip,"12月12日",R.drawable.mole));
-            adapter.notifyDataSetChanged();
+        switch (requestCode){
+            case 0:
+                if (resultCode == RESULT_OK){
+                    String title = data.getStringExtra("title");
+                    String tip = data.getStringExtra("tip");
+                    int[] date = data.getIntArrayExtra("date");
+                    Bitmap bitmap_image = data.getParcelableExtra("image");
+                    BitmapDrawable image =new BitmapDrawable(getResources(),bitmap_image);
+                    listThings.add( new Thing(title, tip,date,image));
+                    fileDataSource.save();
+                    adapter.notifyDataSetChanged();
+                }
+                break;
         }
+
     }
 }

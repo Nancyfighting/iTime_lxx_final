@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -22,6 +23,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.myitime.R;
@@ -33,18 +35,20 @@ import java.util.Calendar;
 
 public class AddActivity extends AppCompatActivity {
     Calendar ca = Calendar.getInstance();
-    private int  year = ca.get(Calendar.YEAR);
-    private int  month = ca.get(Calendar.MONTH);
-    private int  day = ca.get(Calendar.DAY_OF_MONTH);
+    private int date[];
     TextView textViewDate;
     private ImageButton buttonOK,buttonCancel;
     private EditText editTextAddTitle,editTextAddTip;
     private AlertDialog alertDialog1;
+    private Bitmap cameraPhoto;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_add);
+
+        date=new int[5];  //初始化装日期的数组
 
         LinearLayout linearLayout_date = this.findViewById(R.id.linearLayout_date);
         LinearLayout linearLayout_image = this.findViewById(R.id.linearLayout_image);
@@ -56,6 +60,7 @@ public class AddActivity extends AppCompatActivity {
         editTextAddTitle = findViewById(R.id.editText_add_title);
         editTextAddTip = findViewById(R.id.editText_add_tip);
 
+        //点击选择日期后
         linearLayout_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -63,12 +68,25 @@ public class AddActivity extends AppCompatActivity {
                     //重写onDateSet方法
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        AddActivity.this.year=year;//dothings
-                        AddActivity.this.month=monthOfYear+1;//year，monthOfYear,dayOfMonth分别为当前选择的年，月，日，这样便获取到了你想要的日期
-                        AddActivity.this.day=dayOfMonth;
-                        textViewDate.setText(AddActivity.this.year+"年"+AddActivity.this.month+"月"+ AddActivity.this.day+"日");
+                        date[0]=year;//dothings
+                        date[1]=monthOfYear+1;//year，monthOfYear,dayOfMonth分别为当前选择的年，月，日，这样便获取到了你想要的日期
+                        date[2]=dayOfMonth;
+
+                        new TimePickerDialog( AddActivity.this,new TimePickerDialog.OnTimeSetListener() {
+                                    @Override
+                                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                        date[3]=hourOfDay;
+                                        date[4]=minute;
+                                        textViewDate.setText(date[0]+"年"+date[1]+"月"+ date[2]+"日 " + hourOfDay + ":" + minute);
+                                    }
+                                }
+                                // 设置初始时间
+                                , ca.get(Calendar.HOUR_OF_DAY)
+                                , ca.get(Calendar.MINUTE)
+                                // true表示采用24小时制
+                                ,true).show();
                     }
-                },year,month,day).show();
+                },ca.get(Calendar.YEAR),ca.get(Calendar.MONTH),Calendar.DAY_OF_MONTH).show();
             }
         });
 
@@ -86,7 +104,8 @@ public class AddActivity extends AppCompatActivity {
             }
         });
 
-        //点击事件
+
+        //点击确认后事件
         buttonOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -97,7 +116,8 @@ public class AddActivity extends AppCompatActivity {
                     Intent intent = new Intent();
                     intent.putExtra("title", editTextAddTitle.getText().toString());
                     intent.putExtra("tip", editTextAddTip.getText().toString());
-
+                    intent.putExtra("date", date);
+                    intent.putExtra("image", cameraPhoto);
                     setResult(RESULT_OK, intent);
                     AddActivity.this.finish();
                 }
@@ -133,10 +153,9 @@ public class AddActivity extends AppCompatActivity {
                 //获取数据
                 //获取内容解析者对象
                 try {
-                    Bitmap cameraPhoto = BitmapFactory.decodeStream(
+                    cameraPhoto = BitmapFactory.decodeStream(
                             getContentResolver().openInputStream(data.getData()));
                     this.findViewById(R.id.constraintLayout2).setBackground(new BitmapDrawable(getResources(),cameraPhoto));
-
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -144,33 +163,6 @@ public class AddActivity extends AppCompatActivity {
             }
         }
     }
-
-//    @Override
-//    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-//        super.onCreateContextMenu(menu, v, menuInfo);
-//        menu.add(0, CONTEXT_MENU_DELETE, 0, "删除");
-//        menu.add(0, CONTEXT_MENU_NEW, 0, "添加");
-//        menu.add(0, CONTEXT_MENU_UPDATE, 0, "修改");
-//    }
-//
-//    @Override
-//    public boolean onContextItemSelected(@NonNull MenuItem item) {
-//        switch (item.getItemId()) {
-//            case 1:
-//                Toast.makeText(this, "点击了删除", Toast.LENGTH_SHORT).show();
-//                break;
-//            case 2:
-//                Toast.makeText(this, "添加", Toast.LENGTH_SHORT).show();
-//                break;
-//            case 3:
-//                Toast.makeText(this, "修改", Toast.LENGTH_SHORT).show();
-//                break;
-//
-//            default:
-//                break;
-//        }
-//        return super.onContextItemSelected(item);
-//    }
 
     public void showList(View view){
 

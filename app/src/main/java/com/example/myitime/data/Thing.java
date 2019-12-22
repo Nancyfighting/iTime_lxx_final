@@ -1,6 +1,25 @@
 package com.example.myitime.data;
 
-public class Thing {
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+
+import java.io.Serializable;
+
+public class Thing implements Serializable {
+
+    private String title;
+    private String tip;
+    private int[] time;
+    private BitmapDrawable image;
+
+
+    public Thing(String title, String tip, int[] time, BitmapDrawable image) {
+        this.title = title;
+        this.tip = tip;
+        this.time = time;
+        this.image = image;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -17,31 +36,19 @@ public class Thing {
         this.tip = tip;
     }
 
-    public String getTime() {
+    public int[] getTime() {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(int[] time) {
         this.time = time;
     }
 
-    public int getResourceId() {
-        return ResourceId;
+    public BitmapDrawable getImage() {
+        return image;
     }
 
-    public void setResourceId(int resourceId) {
-        ResourceId = resourceId;
+    public void setImage(BitmapDrawable image) {
+        this.image = image;
     }
-
-    public Thing(String title, String tip, String time, int resourceId) {
-        this.title = title;
-        this.tip = tip;
-        this.time = time;
-        ResourceId = resourceId;
-    }
-
-    private String title;
-    private String tip;
-    private String time;
-    private int ResourceId;
 }

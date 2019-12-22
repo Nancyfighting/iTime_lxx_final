@@ -113,12 +113,14 @@
                 android:id="@+id/textView_autoNew"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
+                android:gravity="center|left"
                 android:text="重复设置" />
 
             <TextView
                 android:id="@+id/textView_autoNew_end"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
+                android:gravity="center|left"
                 android:text="无" />
         </LinearLayout>
 
