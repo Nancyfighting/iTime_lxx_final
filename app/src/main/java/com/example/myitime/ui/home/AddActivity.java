@@ -6,60 +6,83 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
+import android.provider.MediaStore;
 import android.view.View;
 import android.view.Window;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.myitime.MainActivity;
 import com.example.myitime.R;
 import com.example.myitime.data.Thing;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.Calendar;
+
+import static com.example.myitime.MainActivity.adapter;
 
 public class AddActivity extends AppCompatActivity {
     Calendar ca = Calendar.getInstance();
     private int date[];
     TextView textViewDate;
-    private ImageButton buttonOK,buttonCancel;
+    TextView textView_autoNew_end;
+    private ImageView ImageView_OK,ImageView_Cancel;
     private EditText editTextAddTitle,editTextAddTip;
     private AlertDialog alertDialog1;
     private Bitmap cameraPhoto;
-
+    private String auto_pre;
+    private int auto_num;
+    private int position;
+    private Thing thing;
+    private int yemian=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_add);
 
-        date=new int[5];  //初始化装日期的数组
-
+        //初始化装日期的数组
+        date= new int[]{ca.get(Calendar.YEAR), ca.get(Calendar.MONTH), ca.get(Calendar.DAY_OF_MONTH), ca.get(Calendar.HOUR_OF_DAY), ca.get(Calendar.MINUTE)};
         LinearLayout linearLayout_date = this.findViewById(R.id.linearLayout_date);
         LinearLayout linearLayout_image = this.findViewById(R.id.linearLayout_image);
         final LinearLayout linearLayout_autoNew = this.findViewById(R.id.linearLayout_autoNew);
 
+        textView_autoNew_end = findViewById(R.id.textView_autoNew_end);
         textViewDate = findViewById(R.id.textView_date_end);
-        buttonOK = findViewById(R.id.imageButton_ok);
-        buttonCancel = findViewById(R.id.imageButton_back);
+        ImageView_OK = findViewById(R.id.imageView_ok);
+        ImageView_Cancel = findViewById(R.id.imageView_back);
         editTextAddTitle = findViewById(R.id.editText_add_title);
         editTextAddTip = findViewById(R.id.editText_add_tip);
 
+        position=getIntent().getIntExtra("position",-1);
+        if(position != -1)
+        {
+            String s = editTextAddTitle.getText().toString();
+            yemian=1;
+
+            thing = MainActivity.listThings.get(position);
+            editTextAddTitle.setText(thing.getTitle());
+            editTextAddTip.setText(thing.getTip());
+            date =thing.getTime();
+            textViewDate.setText(date[0]+"年"+date[1]+"月"+ date[2]+"日 " + date[3] + ":" + date[4]);
+            textView_autoNew_end.setText(thing.getAuto_pre());
+        }
         //点击选择日期后
         linearLayout_date.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,7 +109,7 @@ public class AddActivity extends AppCompatActivity {
                                 // true表示采用24小时制
                                 ,true).show();
                     }
-                },ca.get(Calendar.YEAR),ca.get(Calendar.MONTH),Calendar.DAY_OF_MONTH).show();
+                },ca.get(Calendar.YEAR),ca.get(Calendar.MONTH),ca.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
 
@@ -106,25 +129,40 @@ public class AddActivity extends AppCompatActivity {
 
 
         //点击确认后事件
-        buttonOK.setOnClickListener(new View.OnClickListener() {
+        ImageView_OK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(editTextAddTitle.getText().toString().equals("")){
-                    Toast.makeText(getApplicationContext(), "标题不能为空", Toast.LENGTH_SHORT).show();
+                if(editTextAddTitle.getText().toString().equals("")||cameraPhoto==null){
+                    if(editTextAddTitle.getText().toString().equals(""))
+                         Toast.makeText(getApplicationContext(), "标题不能为空", Toast.LENGTH_SHORT).show();
+                    else
+                        Toast.makeText(getApplicationContext(), "图片不能为空", Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    Intent intent = new Intent();
-                    intent.putExtra("title", editTextAddTitle.getText().toString());
-                    intent.putExtra("tip", editTextAddTip.getText().toString());
-                    intent.putExtra("date", date);
-                    intent.putExtra("image", cameraPhoto);
-                    setResult(RESULT_OK, intent);
+                    String title = editTextAddTitle.getText().toString();
+                    String tip = editTextAddTip.getText().toString();
+                    String auto_pre = textView_autoNew_end.getText().toString();
+                    ByteArrayOutputStream output = new ByteArrayOutputStream();//初始化一个流对象
+                    cameraPhoto.compress(Bitmap.CompressFormat.PNG, 100, output);//把bitmap100%高质量压缩 到 output对象里
+                    byte[] image = output.toByteArray();//转换成功了  result就是一个bit的资源数组
+                    if(yemian==1)
+                    {
+                        Thing thing_update=MainActivity.listThings.get(position);
+                        thing_update.setTitle(title);
+                        thing_update.setTip(tip);
+                        thing_update.setAuto_pre(auto_pre);
+                        thing_update.setImage(image);
+                        thing_update.setTime(date);
+                    }
+                    else
+                        MainActivity.listThings.add( new Thing(title, tip,date,image,auto_pre));
+                    adapter.notifyDataSetChanged();
                     AddActivity.this.finish();
                 }
             }
         });
 
-        buttonCancel.setOnClickListener(new View.OnClickListener() {
+        ImageView_Cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 AddActivity.this.finish();
@@ -153,10 +191,13 @@ public class AddActivity extends AppCompatActivity {
                 //获取数据
                 //获取内容解析者对象
                 try {
-                    cameraPhoto = BitmapFactory.decodeStream(
-                            getContentResolver().openInputStream(data.getData()));
+                    ContentResolver resolver = getContentResolver();
+                    Uri originalUri = data.getData();        //获得图片的uri
+                    cameraPhoto = MediaStore.Images.Media.getBitmap(resolver, originalUri);        //得到bitmap图片
                     this.findViewById(R.id.constraintLayout2).setBackground(new BitmapDrawable(getResources(),cameraPhoto));
                 } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
 
@@ -166,12 +207,28 @@ public class AddActivity extends AppCompatActivity {
 
     public void showList(View view){
 
-        final String[] items = {"每周", "每月", "每日", "每年"};
+        final String[] items = {"每周", "每月", "每年","自定义","无"};
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
         alertBuilder.setTitle("周期");
         alertBuilder.setItems(items, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialogInterface, int i) {
-                Toast.makeText(AddActivity.this, items[i], Toast.LENGTH_SHORT).show();
+                if(i!=3) {
+                    textView_autoNew_end.setText(items[i]);
+                }
+                else
+                {
+                    final EditText inputServer = new EditText(AddActivity.this);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(AddActivity.this);
+                    builder.setTitle("周期").setView(inputServer)
+                            .setNegativeButton("取消", null);
+                    builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface dialog, int which) {
+                            textView_autoNew_end.setText(inputServer.getText().toString()+"天");
+                        }
+                    });
+                    builder.show();
+                }
                 alertDialog1.dismiss();
             }
         });

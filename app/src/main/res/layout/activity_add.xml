@@ -60,8 +60,8 @@
             app:layout_constraintStart_toStartOf="@id/textView_add_tip"
             app:layout_constraintTop_toBottomOf="@id/textView_add_tip" />
 
-        <ImageButton
-            android:id="@+id/imageButton_back"
+        <ImageView
+            android:id="@+id/imageView_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -72,8 +72,8 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_back" />
 
-        <ImageButton
-            android:id="@+id/imageButton_ok"
+        <ImageView
+            android:id="@+id/imageView_ok"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"

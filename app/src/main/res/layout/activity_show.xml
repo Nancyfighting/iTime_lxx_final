@@ -4,33 +4,72 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.home.EditActivity">
+    tools:context=".ui.home.ShowActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout_edit"
+        android:id="@+id/constraintLayout_image"
         android:layout_width="409dp"
         android:layout_height="240dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageButton
-            android:id="@+id/imageButton_delete"
+        <ImageView
+            android:id="@+id/imageView_delete"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@+id/imageButton_edit"
-            app:srcCompat="@drawable/ic_back"
-            tools:layout_editor_absoluteX="230dp" />
-
-        <ImageButton
-            android:id="@+id/imageButton_edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_height="40dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView_edit"
+            app:layout_constraintEnd_toStartOf="@+id/imageView_edit"
+            app:srcCompat="@drawable/ic_delete"
+            tools:ignore="MissingConstraints" />
+
+        <ImageView
+            android:id="@+id/imageView_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_auto_new" />
+            app:srcCompat="@drawable/ic_edit" />
+
+        <TextView
+            android:id="@+id/textView_title_show"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="150dp"
+            android:layout_marginLeft="150dp"
+            android:layout_marginTop="80dp"
+            android:text="TextView"
+            android:textColor="#ffffff"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView_date_show"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="130dp"
+            android:layout_marginLeft="130dp"
+            android:layout_marginTop="32dp"
+            android:text="TextView"
+            android:textColor="#ffffff"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_title_show" />
+
+        <TextView
+            android:id="@+id/textView_daojishi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="130dp"
+            android:layout_marginLeft="130dp"
+            android:layout_marginTop="32dp"
+            android:text="TextView"
+            android:textColor="#ffffff"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView_date_show" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 <!--    <LinearLayout-->
@@ -70,7 +109,7 @@
         android:layout_height="70dp"
         android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout_edit">
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout_image">
 
         <ImageView
             android:id="@+id/imageView2"
@@ -85,7 +124,7 @@
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="70dp"
-            android:layout_weight="2"
+            android:layout_weight="3"
             android:gravity="center|left"
             android:text="通知栏"
             android:textSize="18sp" />
@@ -119,10 +158,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="70dp"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:gravity="center|left"
             android:text="在日历中显示"
-            android:textSize="24sp" />
+            android:textSize="18sp" />
 
         <Switch
             android:id="@+id/switch3"
@@ -152,10 +191,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="70dp"
-            android:layout_weight="2"
+            android:layout_weight="3"
             android:gravity="center|left"
             android:text="快捷图标"
-            android:textSize="24sp" />
+            android:textSize="18sp" />
 
         <Switch
             android:id="@+id/switch4"

@@ -1,10 +1,12 @@
 package com.example.myitime;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.example.myitime.data.Thing;
 import com.example.myitime.data.ThingSaver;
+import com.example.myitime.ui.home.HomeFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -34,6 +36,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static  ArrayList<Thing> listThings;
+    public static HomeFragment.ThingAdapter adapter;
     private AppBarConfiguration mAppBarConfiguration;
 
     @Override

@@ -1,8 +1,5 @@
 package com.example.myitime.data;
 
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-
 import java.io.Serializable;
 
 public class Thing implements Serializable {
@@ -10,14 +7,16 @@ public class Thing implements Serializable {
     private String title;
     private String tip;
     private int[] time;
-    private BitmapDrawable image;
+    private byte[] image;
+    private String auto_pre;
 
 
-    public Thing(String title, String tip, int[] time, BitmapDrawable image) {
+    public Thing(String title, String tip, int[] time, byte[] image, String auto_pre) {
         this.title = title;
         this.tip = tip;
         this.time = time;
         this.image = image;
+        this.auto_pre = auto_pre;
     }
 
     public String getTitle() {
@@ -44,11 +43,19 @@ public class Thing implements Serializable {
         this.time = time;
     }
 
-    public BitmapDrawable getImage() {
+    public byte[] getImage() {
         return image;
     }
 
-    public void setImage(BitmapDrawable image) {
+    public void setImage(byte[] image) {
         this.image = image;
+    }
+
+    public String getAuto_pre() {
+        return auto_pre;
+    }
+
+    public void setAuto_pre(String auto_pre) {
+        this.auto_pre = auto_pre;
     }
 }
