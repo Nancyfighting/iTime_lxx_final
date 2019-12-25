@@ -32,11 +32,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     public static  ArrayList<Thing> listThings;
+    public static   byte[] image_moren;
     public static HomeFragment.ThingAdapter adapter;
     private AppBarConfiguration mAppBarConfiguration;
 
