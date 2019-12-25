@@ -15,25 +15,27 @@
             android:id="@+id/textView_zhi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginLeft="32dp"
             android:layout_marginTop="28dp"
             android:gravity="center"
             android:text="只剩"
             android:textColor="#ffffff"
-            app:layout_constraintStart_toStartOf="@+id/textView_sheng"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textView_sheng"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginBottom="24dp"
             android:gravity="center"
             android:text="0天"
             android:textColor="#ffffff"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView_zhi"
-            app:layout_constraintVertical_bias="0.111"
-            tools:layout_editor_absoluteX="39dp" />
+            app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout

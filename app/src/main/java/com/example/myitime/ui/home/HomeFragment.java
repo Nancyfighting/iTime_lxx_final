@@ -203,24 +203,6 @@ public class HomeFragment extends Fragment {
 
     }
 
-//    private void startRun( ) {
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-////                Bundle bundle = new Bundle();
-////                bundle.putInt("msg",position);
-//                Message message = Message.obtain();
-//                message.what = 0x11;
-//                handler.sendMessage(message);
-////每一秒执行一次
-////        handler.postDelayed(this, 1000);
-////                sendMessageDelayed(Message msg)
-//            }
-//        }).start();
-//    }
-
-
-
 
 
     public String formatLongToTimeStr(Long date) {
