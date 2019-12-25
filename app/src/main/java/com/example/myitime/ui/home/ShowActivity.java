@@ -34,7 +34,6 @@ import java.util.Date;
 
 import static com.example.myitime.MainActivity.adapter;
 import static com.example.myitime.ui.home.HomeFragment.getPicFromBytes;
-
 public class ShowActivity extends AppCompatActivity {
 
     private SimpleDateFormat format;
@@ -49,7 +48,7 @@ public class ShowActivity extends AppCompatActivity {
 
     private TextView mDays_Tv, mHours_Tv, mMinutes_Tv, mSeconds_Tv;
     private boolean isRun = true;
-//    private long day
+    //    private long day
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,7 +124,7 @@ public class ShowActivity extends AppCompatActivity {
         leftTime = (d1.getTime() - d2.getTime())/1000;//这样得到的差值是微秒级别
 
         if(leftTime>0)
-        startRun();
+            startRun();
 
     }
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

@@ -40,17 +40,17 @@ import static com.example.myitime.MainActivity.image_moren;
 import static com.example.myitime.ui.home.HomeFragment.getPicFromBytes;
 
 public class EditActivity extends AppCompatActivity {
-
+    Calendar ca = Calendar.getInstance();
+    private int date[];
     TextView textViewDate;
     TextView textView_autoNew_end;
-    private ImageView ImageView_OK,ImageView_Cancel;
     private ConstraintLayout conlayout;
+    private ImageView ImageView_OK,ImageView_Cancel;
     private EditText editTextAddTitle,editTextAddTip;
     private AlertDialog alertDialog1;
     private Bitmap cameraPhoto;
-
-    Calendar ca = Calendar.getInstance();
-    private int date[];
+    private String auto_pre;
+    private int auto_num;
     private int position;
     private byte[] image;
     private Thing thing;
@@ -76,7 +76,6 @@ public class EditActivity extends AppCompatActivity {
         editTextAddTitle = findViewById(R.id.editText_add_title);
         editTextAddTip = findViewById(R.id.editText_add_tip);
         conlayout=findViewById(R.id.constraintLayout2);
-
         position=getIntent().getIntExtra("position",-1);
         if(position != -1)
         {
@@ -105,13 +104,13 @@ public class EditActivity extends AppCompatActivity {
                         date[2]=dayOfMonth;
 
                         new TimePickerDialog( EditActivity.this,new TimePickerDialog.OnTimeSetListener() {
-                                    @Override
-                                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                                        date[3]=hourOfDay;
-                                        date[4]=minute;
-                                        textViewDate.setText(date[0]+"年"+date[1]+"月"+ date[2]+"日 " + hourOfDay + ":" + minute);
-                                    }
-                                }
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                                date[3]=hourOfDay;
+                                date[4]=minute;
+                                textViewDate.setText(date[0]+"年"+date[1]+"月"+ date[2]+"日 " + hourOfDay + ":" + minute);
+                            }
+                        }
                                 // 设置初始时间
                                 , ca.get(Calendar.HOUR_OF_DAY)
                                 , ca.get(Calendar.MINUTE)
@@ -143,7 +142,7 @@ public class EditActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if(editTextAddTitle.getText().toString().equals("")){
 
-                         Toast.makeText(getApplicationContext(), "标题不能为空", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "标题不能为空", Toast.LENGTH_SHORT).show();
 
                 }
                 else{
@@ -178,7 +177,7 @@ public class EditActivity extends AppCompatActivity {
                             cameraPhoto.compress(Bitmap.CompressFormat.PNG, 100, output);//把bitmap100%高质量压缩 到 output对象里
                             image = output.toByteArray();//转换成功了  result就是一个bit的资源数组
                         }
-                         MainActivity.listThings.add( new Thing(title, tip,date,image,auto_pre));
+                        MainActivity.listThings.add( new Thing(title, tip,date,image,auto_pre));
                     }
                     adapter.notifyDataSetChanged();
                     EditActivity.this.finish();
@@ -200,7 +199,7 @@ public class EditActivity extends AppCompatActivity {
      */
     public void openAlbum(){
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("image_moren/*");
+        intent.setType("image/*");
         //设置请求码，以便我们区分返回的数据
         startActivityForResult(intent, 100);
     }
@@ -218,7 +217,7 @@ public class EditActivity extends AppCompatActivity {
                     ContentResolver resolver = getContentResolver();
                     Uri originalUri = data.getData();        //获得图片的uri
                     cameraPhoto = MediaStore.Images.Media.getBitmap(resolver, originalUri);        //得到bitmap图片
-                    conlayout.setBackground(new BitmapDrawable(getResources(),cameraPhoto));
+                    this.findViewById(R.id.constraintLayout2).setBackground(new BitmapDrawable(getResources(),cameraPhoto));
                     img_change=1;
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
